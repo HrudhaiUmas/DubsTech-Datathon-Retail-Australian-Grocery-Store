@@ -4,17 +4,69 @@ author: "Hrudhai Umas"
 date: "`r Sys.Date()`"
 output: html_document
 ---
-## Retail- Australian Grocery Store Analysis by: Ayush Gupta,
-Roshan Mettupalli, and Hrudhai Umas
+## Retail- Australian Grocery Store Analysis by: Ayush Gupta, Roshan Mettupalli, and Hrudhai Umas
 
+### Step 1: Data Manipulation and Cleaning
+
+1. In this first step, we are loading the packages needed to manipulate and 
+clean the data. We are also sorting the dataset to include all the similar
+receipt_id's, to sort based on ____. 
+```{r message=FALSE}
 library(tidyverse)
 
-data <- read_delim("sales_data_2017_2018.csv")
+retail_data <- read_delim("sales_data_2017_2018_data.csv")
 
-
-data %>% 
-  names()
-
-data %>% 
+retail_data %>% 
   arrange(desc(receipt_id))
-  head(15)
+```
+
+2. Looking at the data, the team has realized multiple areas where the data
+could be cleaned and also many fields which were empty, but can be filled. 
+In detail, the field of many _total_buying_price_ are N/A when they are 
+supposed to be a value. Additionally, many fields in _unit_buying_price_, _unit_selling_price_, 
+_unit_price_margin_, _total_buying_price_ _total_selling_price_ and _total profit_,  
+have rounding errors in that it has more than 2 decimal places, which contextually preposterous. We als....
+
+## Rounding Data Columns!
+
+```{r}
+# Round the specified columns to 2 decimal places
+retail_data <- retail_data %>% 
+  mutate(
+    unit_buying_price = round(unit_buying_price, 2),
+    unit_selling_price = round(unit_selling_price, 2),
+    unit_price_margin = round(unit_price_margin, 2),
+    total_buying_price = round(total_buying_price, 2),
+    total_selling_price = round(total_selling_price, 2),
+    total_profit = round(total_profit, 2)
+  )
+
+retail_data
+```
+
+## Adding Values to unit_buying_price!
+```{r}
+retail_data <- retail_data %>% 
+  mutate(
+    unit_buying_price = unit_selling_price - unit_price_margin
+  )
+
+retail_data
+```
+
+## Adding Values to total_buying_price!
+```{r}
+retail_data <- retail_data %>% 
+  mutate(
+    total_buying_price = total_selling_price - total_profit
+  )
+
+retail_data
+```
+
+## Save File: Cleaning and Manipulation is Done!
+```{r}
+# Write the updated data to a new file
+write_csv(retail_data, "sales_data_2017_2018_data_updated.csv")
+```
+
