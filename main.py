@@ -26,13 +26,13 @@ df['month_num'] = df['month'].map(month_to_num)
 # drop any rows with missing values
 df.dropna(inplace=True)
 
-# split the data into X and y
-X = df[['month_num']]
+# split the data into x and y
+x = df[['month_num']]
 y = df['sales']
 
 # train the linear regression model
 model = LinearRegression()
-model.fit(X, y)
+model.fit(x, y)
 
 # predict the sales for January, February, and March of 2019
 jan_sales = model.predict([[1]])
@@ -45,7 +45,7 @@ print(f"Predicted sales for February 2019: ${feb_sales[0]:,.2f}")
 print(f"Predicted sales for March 2019: ${mar_sales[0]:,.2f}")
 
 # calculate the accuracy of the model using R-squared and root mean squared error
-y_pred = model.predict(X)
+y_pred = model.predict(x)
 r_squared = r2_score(y, y_pred)
 rmse = mean_squared_error(y, y_pred, squared=False)
 
@@ -53,8 +53,8 @@ print(f"R-squared: {r_squared:.2f}")
 print(f"Root mean squared error: {rmse:.2f}")
 
 # plot the regression line and the actual sales data
-plt.plot(X, y, 'o')
-plt.plot(X, model.predict(X))
+plt.plot(x, y, 'o')
+plt.plot(x, model.predict(x))
 plt.title('Predicted Monthly Sales (Jan-March 2019)')
 plt.xlabel('Month')
 plt.ylabel('Total Selling Price ($)')
