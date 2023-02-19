@@ -17,7 +17,8 @@ questions that Dubstech had, we were able to learn a lot and practice using our 
 - Please check our presentation for the more indepth answers to our questions and data visualization charts!
 
 Step 3: Machine Learning Model:
-- Using python, we created a machine learning linear regression model that uses the 2018 data to train the model to predict the total sales, total cost, and quantity of items sold for the store and each category for Jan-March of 2019.
+- Using python, we created a machine learning linear regression model that uses the 2018 data to train the model to predict the total sales, total cost, and quantity of items sold for the store as a whole for Jan-March of 2019.
 - This repo conatins the python code
+- Model could be used to also make same predictions for each catgory and subcategory of items sold
 
 
