@@ -1,3 +1,11 @@
+"""
+Machine Learning Linear Regression Model:
+Current implementation is set up to find total sales
+for Jan-March 2019, but can be modified to predict
+other values like the quantity or total
+manufacturing/purchasing costs of the store
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
@@ -10,10 +18,11 @@ data = pd.read_csv('sales_data_2017_2018_data_updated.csv')
 data_2018 = data[data['year'] == 2018]
 
 # group the data by month and calculate the total selling price
-monthly_sales = data_2018.groupby('month_name')['total_selling_price'].sum()
+# change 'total_selling_price' to another field if creating different predictions
+monthly = data_2018.groupby('month_name')['total_selling_price'].sum()
 
-# convert the monthly sales data to a dataframe
-df = pd.DataFrame({'month': monthly_sales.index, 'sales': monthly_sales.values})
+# convert the monthly data to a dataframe
+df = pd.DataFrame({'month': monthly.index, 'sales': monthly.values})
 
 # convert the month names to numbers for the regression model
 month_to_num = {
@@ -35,14 +44,14 @@ model = LinearRegression()
 model.fit(x, y)
 
 # predict the sales for January, February, and March of 2019
-jan_sales = model.predict([[1]])
-feb_sales = model.predict([[2]])
-mar_sales = model.predict([[3]])
+jan = model.predict([[1]])
+feb = model.predict([[2]])
+mar = model.predict([[3]])
 
 # print the predicted sales for each month
-print(f"Predicted sales for January 2019: ${jan_sales[0]:,.2f}")
-print(f"Predicted sales for February 2019: ${feb_sales[0]:,.2f}")
-print(f"Predicted sales for March 2019: ${mar_sales[0]:,.2f}")
+print(f"Predicted sales for January 2019: ${jan[0]:,.2f}")
+print(f"Predicted sales for February 2019: ${feb[0]:,.2f}")
+print(f"Predicted sales for March 2019: ${mar[0]:,.2f}")
 
 # calculate the accuracy of the model using R-squared and root mean squared error
 y_pred = model.predict(x)
@@ -52,7 +61,7 @@ rmse = mean_squared_error(y, y_pred, squared=False)
 print(f"R-squared: {r_squared:.2f}")
 print(f"Root mean squared error: {rmse:.2f}")
 
-# plot the regression line and the actual sales data
+# plot the regression line
 plt.plot(x, y, 'o')
 plt.plot(x, model.predict(x))
 plt.title('Predicted Monthly Sales (Jan-March 2019)')
